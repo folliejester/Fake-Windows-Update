@@ -101,60 +101,21 @@ top: 0;
 left: 0;
 z-index: 1000;
 }
-.spinner-container {
+.spinner {
+border: 6px solid rgba(255, 255, 255, 0.3);
+border-top: 6px solid white;
+border-radius: 50%;
 width: 60px;
 height: 60px;
 margin-bottom: 30px;
-position: relative;
+animation: spin 1s linear infinite;
 }
-.dot {
-position: absolute;
-width: 10px;
-height: 10px;
-background-color: white;
-border-radius: 50%;
-animation: dot-animation 5s infinite;
+@keyframes spin {
+0% {
+transform: rotate(0deg);
 }
-.dot:nth-child(1) { animation-delay: 0s; }
-.dot:nth-child(2) { animation-delay: -0.5s; }
-.dot:nth-child(3) { animation-delay: -1s; }
-.dot:nth-child(4) { animation-delay: -1.5s; }
-.dot:nth-child(5) { animation-delay: -2s; }
-.dot:nth-child(6) { animation-delay: -2.5s; }
-.dot:nth-child(7) { animation-delay: -3s; }
-.dot:nth-child(8) { animation-delay: -3.5s; }
-@keyframes dot-animation {
-0%, 100% {
-top: 0; left: 0;
-transform: scale(1);
-}
-12.5% {
-top: 0; left: 50px;
-transform: scale(1.5);
-}
-25% {
-top: 50px; left: 50px;
-transform: scale(1);
-}
-37.5% {
-top: 50px; left: 0;
-transform: scale(1.5);
-}
-50% {
-top: 0; left: 0;
-transform: scale(1);
-}
-62.5% {
-top: -50px; left: 0;
-transform: scale(1.5);
-}
-75% {
-top: -50px; left: -50px;
-transform: scale(1);
-}
-87.5% {
-top: 0; left: -50px;
-transform: scale(1.5);
+100% {
+transform: rotate(360deg);
 }
 }
 .text-container {
@@ -201,16 +162,7 @@ margin: 0;
 <button id="start-button">Start Update</button>
 </div>
 <div class="update-page" id="update-page">
-<div class="spinner-container">
-<div class="dot"></div>
-<div class="dot"></div>
-<div class="dot"></div>
-<div class="dot"></div>
-<div class="dot"></div>
-<div class="dot"></div>
-<div class="dot"></div>
-<div class="dot"></div>
-</div>
+<div class="spinner"></div>
 <div class="text-container">
 <h1>Working on updates</h1>
 <h2 id="progress-text">1% complete</h2>
