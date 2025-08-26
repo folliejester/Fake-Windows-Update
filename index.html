@@ -98,44 +98,40 @@
             top: 0;
             left: 0;
             z-index: 1000;
+            gap: 1em;
+        }
+        .spinner {
+            border: 8px solid rgba(255, 255, 255, 0.3);
+            border-top: 8px solid white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1.5s linear infinite, fadeIn 1s ease-in-out forwards 0.5s;
+            opacity: 0;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         .update-page h1 {
-            font-size: 3.5em;
-            font-weight: 400;
-            margin-bottom: 0.5rem;
-            opacity: 0;
-            animation: fadeIn 1s ease-in-out forwards 0.5s;
-        }
-        .update-page h2 {
-            font-size: 2em;
+            font-size: 3em;
             font-weight: 400;
             margin: 0;
             opacity: 0;
             animation: fadeIn 1s ease-in-out forwards 1.5s;
         }
-        .update-page p {
+        .update-page h2 {
             font-size: 1.5em;
-            margin-top: 2rem;
+            font-weight: 400;
+            margin: 0;
             opacity: 0;
             animation: fadeIn 1s ease-in-out forwards 2s;
         }
-        .progress-bar {
-            width: 60%;
-            max-width: 500px;
-            height: 12px;
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
-            margin-top: 2rem;
-            overflow: hidden;
+        .update-page p {
+            font-size: 1em;
+            margin-top: 1em;
             opacity: 0;
-            animation: fadeIn 1s ease-in-out forwards 1.5s;
-        }
-        .progress-fill {
-            height: 100%;
-            background-color: white;
-            width: 0%;
-            border-radius: 6px;
-            transition: width 0.1s linear;
+            animation: fadeIn 1s ease-in-out forwards 2.5s;
         }
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -166,11 +162,9 @@
         <button id="start-button">Start Update</button>
     </div>
     <div class="update-page" id="update-page">
+        <div class="spinner"></div>
         <h1>Working on updates</h1>
         <h2 id="progress-text">1% complete</h2>
-        <div class="progress-bar">
-            <div id="progress-fill" class="progress-fill"></div>
-        </div>
         <p>Do not turn off your computer.</p>
     </div>
     <audio id="notification-sound" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" preload="auto"></audio>
@@ -178,11 +172,9 @@
         const startButton = document.getElementById('start-button');
         const settingsPage = document.getElementById('settings-page');
         const updatePage = document.getElementById('update-page');
-        const progressFill = document.getElementById('progress-fill');
         const progressText = document.getElementById('progress-text');
         const notificationSound = document.getElementById('notification-sound');
         let intervalId;
-        let timeoutId;
         startButton.addEventListener('click', () => {
             const timePerPercent = parseFloat(document.getElementById('time-per-percent').value) || 2;
             const stuckAt = parseFloat(document.getElementById('stuck-at').value);
@@ -215,7 +207,6 @@
                     return;
                 }
                 percentage++;
-                progressFill.style.width = `${percentage}%`;
                 progressText.textContent = `${percentage}% complete`;
             }, timePerPercent * 1000);
         }
