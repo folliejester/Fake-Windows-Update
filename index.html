@@ -187,7 +187,7 @@ function startSpinner() {
 spinnerIntervalId = setInterval(() => {
 spinner.textContent = unicodeSpinnerChars[spinnerIndex];
 spinnerIndex = (spinnerIndex + 1) % unicodeSpinnerChars.length;
-}, 75); // The original site uses a delay of 75ms for a smooth animation
+}, 75);
 }
 function startUpdate(timePerPercent, stuckAt, soundBeforeEnd) {
 let percentage = 0;
