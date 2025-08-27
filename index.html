@@ -101,32 +101,11 @@ top: 0;
 left: 0;
 z-index: 1000;
 }
-.spinner-container {
-width: 60px;
-height: 60px;
+#spinner {
+font-size: 60px;
+font-family: 'Segoe UI', sans-serif;
+color: white;
 margin-bottom: 30px;
-position: relative;
-}
-.dot {
-position: absolute;
-width: 8px;
-height: 8px;
-background-color: white;
-border-radius: 50%;
-opacity: 0;
-animation: dot-fading 4s linear infinite;
-}
-.dot:nth-child(1) { top: 0; left: 50%; margin-left: -4px; animation-delay: 0s; }
-.dot:nth-child(2) { top: 14.64%; right: 14.64%; margin-top: -4px; margin-right: -4px; animation-delay: -0.5s; }
-.dot:nth-child(3) { top: 50%; right: 0; margin-top: -4px; margin-right: -4px; animation-delay: -1s; }
-.dot:nth-child(4) { bottom: 14.64%; right: 14.64%; margin-bottom: -4px; margin-right: -4px; animation-delay: -1.5s; }
-.dot:nth-child(5) { bottom: 0; left: 50%; margin-bottom: -4px; margin-left: -4px; animation-delay: -2s; }
-.dot:nth-child(6) { bottom: 14.64%; left: 14.64%; margin-bottom: -4px; margin-left: -4px; animation-delay: -2.5s; }
-.dot:nth-child(7) { top: 50%; left: 0; margin-top: -4px; margin-left: -4px; animation-delay: -3s; }
-.dot:nth-child(8) { top: 14.64%; left: 14.64%; margin-top: -4px; margin-left: -4px; animation-delay: -3.5s; }
-@keyframes dot-fading {
-0%, 100% { opacity: 0; }
-12.5%, 87.5% { opacity: 1; }
 }
 .text-container {
 display: flex;
@@ -172,16 +151,7 @@ margin: 0;
 <button id="start-button">Start Update</button>
 </div>
 <div class="update-page" id="update-page">
-<div class="spinner-container">
-<div class="dot"></div>
-<div class="dot"></div>
-<div class="dot"></div>
-<div class="dot"></div>
-<div class="dot"></div>
-<div class="dot"></div>
-<div class="dot"></div>
-<div class="dot"></div>
-</div>
+<div id="spinner"></div>
 <div class="text-container">
 <h1>Working on updates</h1>
 <h2 id="progress-text">1% complete</h2>
@@ -195,7 +165,11 @@ const settingsPage = document.getElementById('settings-page');
 const updatePage = document.getElementById('update-page');
 const progressText = document.getElementById('progress-text');
 const notificationSound = document.getElementById('notification-sound');
+const spinner = document.getElementById('spinner');
 let intervalId;
+let spinnerIntervalId;
+const unicodeSpinnerChars = Array.from({ length: 18 }, (_, i) => String.fromCharCode(0xE052 + i));
+let spinnerIndex = 0;
 startButton.addEventListener('click', () => {
 const timePerPercent = parseFloat(document.getElementById('time-per-percent').value) || 2;
 const stuckAt = parseFloat(document.getElementById('stuck-at').value);
@@ -206,8 +180,15 @@ setTimeout(() => {
 updatePage.style.display = 'flex';
 document.documentElement.requestFullscreen();
 startUpdate(timePerPercent, stuckAt, soundBeforeEnd);
+startSpinner();
 }, startAfter * 1000);
 });
+function startSpinner() {
+spinnerIntervalId = setInterval(() => {
+spinner.textContent = unicodeSpinnerChars[spinnerIndex];
+spinnerIndex = (spinnerIndex + 1) % unicodeSpinnerChars.length;
+}, 75); // The original site uses a delay of 75ms for a smooth animation
+}
 function startUpdate(timePerPercent, stuckAt, soundBeforeEnd) {
 let percentage = 0;
 const totalTime = (timePerPercent * 100) * 1000;
@@ -225,6 +206,7 @@ return;
 }
 if (percentage >= 100) {
 clearInterval(intervalId);
+clearInterval(spinnerIntervalId);
 return;
 }
 percentage++;
